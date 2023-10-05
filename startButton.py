@@ -18,7 +18,7 @@ def test_google_button():
 
     wait = WebDriverWait(driver, 10)
 
-    # First Button Click
+   
     try:
         button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.b-blue')))
         button.click()
@@ -29,7 +29,7 @@ def test_google_button():
         result = f"Cannot click First Button Error!!!"
         return result, screenshot_path
 
-    # Google Register Button Click
+    
     try:
         google_register = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'img[alt="google"]')))
         google_register.click()
@@ -40,7 +40,7 @@ def test_google_button():
         result = f"Cannot click Google Register Button Error!!!"
         return result, screenshot_path
 
-    # Check for Google Register Result
+    
     try:
         expected_div_selector = 'div[jsname="f2d3ae"][role="presentation"]'
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, expected_div_selector)))

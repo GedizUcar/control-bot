@@ -8,8 +8,8 @@ from span import test_signup_button
 from pricing import test_pricing_button
 from login import test_login_button
 from startButton import test_google_button
-from emailControl import test_email
-from demo import test_demo_button
+from emailControl import selenium_test_email
+from demo import selenium_test_demo_button
 from discord import Embed
 from datetime import datetime
 
@@ -27,7 +27,8 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'We have logged in as {bot.user}')
-    scheduler.start()
+    if not scheduler.running:
+        scheduler.start()
 
 
 async def send_error(channel, filename):
@@ -91,7 +92,7 @@ async def send_message():
                 await send_error(channel, google_screenshot_path)
         
         
-        email_result, email_screenshot_path = test_email()
+        email_result, email_screenshot_path =  selenium_test_email()
         final_message7 = email_result
 
         if "Email button works well" not in email_result:
@@ -101,7 +102,7 @@ async def send_message():
                 await send_error(channel, email_screenshot_path)
         
 
-        demo_result, demo_screenshot_path = test_demo_button()
+        demo_result, demo_screenshot_path =  selenium_test_demo_button()
         final_message8 = demo_result
 
         if "Demo , mic and camera buttons are works well" not in demo_result:
@@ -165,7 +166,7 @@ async def sendError():
             if google_screenshot_path:  
                 await send_error(channel, google_screenshot_path)
 
-        email_result, email_screenshot_path = test_email()
+        email_result, email_screenshot_path =  selenium_test_email()
         final_message7= email_result
 
         if "Email button works well" not in email_result:
@@ -173,7 +174,7 @@ async def sendError():
             if email_screenshot_path:  
                 await send_error(channel, email_screenshot_path)
 
-        demo_result, demo_screenshot_path = test_demo_button()
+        demo_result, demo_screenshot_path =  selenium_test_demo_button()
         final_message8= demo_result
 
         if "Demo , mic and camera buttons are works well" not in demo_result:
@@ -182,8 +183,8 @@ async def sendError():
                 await send_error(channel, demo_screenshot_path)
 
 
-scheduler.add_job(send_message, 'cron', hour=11,minute=29)  
-scheduler.add_job(send_message, 'cron', hour=13,minute=16)  
+scheduler.add_job(send_message, 'cron', hour=11,minute=50)  
+scheduler.add_job(send_message, 'cron', hour=16,minute=54)  
 scheduler.add_job(send_message, 'cron', hour=21,minute=5)
 scheduler.add_job(sendError, 'interval', minutes=10)
 

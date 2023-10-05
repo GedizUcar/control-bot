@@ -3,9 +3,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+import threading
+from queue import Queue
 
 
-def test_email():
+def selenium_task(q, function, *args, **kwargs):
+    result = function(*args, **kwargs)
+    q.put(result)
+def selenium_test_email():
+
     result = "Email button works well"
     screenshot_path = None
 
@@ -19,7 +25,7 @@ def test_email():
 
     wait = WebDriverWait(driver, 10)
 
-    # First Button Click
+    
     try:
         button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.b-blue')))
         button.click()
@@ -30,7 +36,7 @@ def test_email():
         result = f"Cannot click First Button Error!!!"
         return result, screenshot_path
 
-    # Email Register Button Click
+    
     try:
         email_register = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-toggle="collapse"]')))
         email_register.click()
@@ -41,7 +47,7 @@ def test_email():
         result = f"Cannot click Email Register Button Error!!!"
         return result, screenshot_path
 
-    # Check for Email Register Result
+   
     try:
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.jsx-544dc49cb436bf91')))
     except Exception as e:
@@ -53,3 +59,10 @@ def test_email():
 
     driver.quit()
     return result, None
+
+async def test_email():
+    q = Queue()
+    t = threading.Thread(target=selenium_task, args=(q, selenium_test_email))
+    t.start()
+    t.join()
+    return q.get()
