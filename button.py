@@ -1,39 +1,62 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException,ElementNotInteractableException
+from  selenium.common.exceptions import TimeoutException
+import time
 
-chrome_options = Options()
 
-def buton_kontrol(driver, data_event_value, beklenen_element):
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+def test_button(wait, data_event, expected_element):
     try:
-        wait = WebDriverWait(driver, 20)
-        buton = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, f"[data-event='{data_event_value}']")))
-        buton.click()
         
-       
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, beklenen_element)))
+        button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, f"[data-event='{data_event}']")))
+        button.click()
+        time.sleep(2)
         
-        print(f"'{data_event_value}' data-event değerine sahip buton çalışıyor ve doğru sayfa açıldı.")
-    except NoSuchElementException:
-        print(f"'{data_event_value}' data-event değerine sahip buton bulunamadı veya tıklanamadı.")
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, expected_element)))
+        return True, "", None
+    except NoSuchElementException as e:
+        screenshot_path = f"{data_event}_screenshot.png"
+        wait._driver.save_screenshot(screenshot_path)
+        return False, f"'{data_event}' button is working but wrong page is opening.", screenshot_path
+    except ElementNotInteractableException as e:
+        screenshot_path = f"{data_event}_screenshot.png"
+        wait._driver.save_screenshot(screenshot_path)
+        return False, f"Unsuccessful while clicking '{data_event}' button.", screenshot_path
     except Exception as e:
-        print(f"'{data_event_value}' data-event değerine sahip buton çalışıyor ama yanlış sayfa açıldı. Hata: {e}")
+        screenshot_path = f"{data_event}_screenshot.png"
+        wait._driver.save_screenshot(screenshot_path)
+        return False, f"An error occurred while testing '{data_event}' button.", screenshot_path
 
+def test_buttons():
+    errors = []
+    screenshot_paths = []
+    driver = webdriver.Chrome()
+    driver.get('https://app.percogo.com')
+    wait = WebDriverWait(driver, 20)
 
-driver_path = '/opt/homebrew/bin/chromedriver'
-s = Service(driver_path)
-driver = webdriver.Chrome(service=s, options=chrome_options)
+    try:
+        success1, message1, screenshot_path1 = test_button(wait, 'nav-topmenu-pricing1', 'label.form-switch')
+        if not success1:
+            errors.append(message1)
+            if screenshot_path1:
+                screenshot_paths.append(screenshot_path1)
 
+        success2, message2, screenshot_path2 = test_button(wait, 'nav-topmenu-login', 'div.create-your-hub-description1')
+        if not success2:
+            errors.append(message2)
+            if screenshot_path2:
+                screenshot_paths.append(screenshot_path2)
+    finally:
+        driver.quit()
 
-driver.get('https://app.percogo.com')
-
-
-buton_kontrol(driver, 'nav-topmenu-pricing', 'label.form-switch')
-buton_kontrol(driver, 'nav-topmenu-login', 'div.create-your-hub-description')
-
-
-driver.quit()
+    if errors:
+        return "\n".join(errors), screenshot_paths
+    else:
+        return "Login and Pricing Buttons are working", None
