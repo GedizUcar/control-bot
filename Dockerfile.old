@@ -6,7 +6,6 @@ WORKDIR /app
 # Set environment variable to prevent prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies and Python 3.10
 RUN apt-get update && apt-get install -y software-properties-common \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y \
@@ -15,16 +14,12 @@ RUN apt-get update && apt-get install -y software-properties-common \
     python3.10 \
     python3.10-distutils \
     python3.10-venv \
+    python3-pip \
     libglib2.0-0 \
     libnss3 \
     libgconf-2-4 \
     libfontconfig1 \
     && rm -rf /var/lib/apt/lists/* 
-
-# Install pip for Python 3.10
-RUN wget https://bootstrap.pypa.io/get-pip.py && \
-    /usr/bin/python3.10 get-pip.py && \
-    rm get-pip.py
 
 # Install dependencies for Google Chrome
 RUN apt-get update && apt-get install -y \
@@ -56,13 +51,17 @@ RUN wget https://chromedriver.storage.googleapis.com/94.0.4606.41/chromedriver_l
     && chmod +x /usr/bin/chromedriver \
     && rm chromedriver_linux64.zip
 
+
+
 # Copy only the requirements file first to leverage Docker cache
 COPY requirements.txt requirements.txt
 
 USER root
 
-# Install dependencies using Python 3.10 pip
-RUN /usr/bin/python3.10 -m pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+
 
 # Copy the rest of the application
 COPY . .

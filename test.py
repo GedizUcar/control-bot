@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 
 
 def test_site():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver')
 
     screenshot_path = None
 

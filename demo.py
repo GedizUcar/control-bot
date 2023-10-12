@@ -10,7 +10,7 @@ def start_chrome_with_permissions():
     chrome_options = Options()
     chrome_options.add_argument("--use-fake-ui-for-media-stream")
     
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options,executable_path='/opt/homebrew/bin/chromedriver')
     return driver
 
 def selenium_task(q,function,*args,**kwargs):

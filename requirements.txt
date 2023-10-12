@@ -33,3 +33,5 @@ urllib3==1.26.16
 urllib3-secure-extra==0.1.0
 wsproto==1.2.0
 yarl==1.9.2
+webdriver_manager==3.5.0
+

@@ -1,9 +1,9 @@
 import os
+import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from test import test_site
-import discord
 from span import test_signup_button
 from pricing import test_pricing_button
 from login import test_login_button
@@ -186,6 +186,7 @@ async def sendError():
 scheduler.add_job(send_message, 'cron', hour=11,minute=50)  
 scheduler.add_job(send_message, 'cron', hour=16,minute=54)  
 scheduler.add_job(send_message, 'cron', hour=21,minute=5)
+scheduler.add_job(send_message, 'interval',minutes=1)
 scheduler.add_job(sendError, 'interval', minutes=10)
 
 

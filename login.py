@@ -9,7 +9,7 @@ def test_login_button():
     screenshot_path = None
 
     
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(executable_path='/opt/homebrew/bin/chromedriver')
 
     try:
         driver.get("https://app.percogo.com")
