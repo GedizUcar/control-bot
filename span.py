@@ -7,7 +7,10 @@ from selenium.webdriver.chrome.options import Options
 def test_signup_button():
     result = "Sign Up button works well"
     screenshot_path = None
-
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     
     driver = webdriver.Chrome(executable_path='/opt/homebrew/bin/chromedriver')
 

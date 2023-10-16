@@ -68,7 +68,7 @@ RUN /usr/bin/python3.10 -m pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Set environment variables (if needed)
-ENV BOT_TOKEN=MTE0MjQ1NDYwMTYzMTY3MDM5NA.GJxKN_.EiMk4-TgX5TzgE_gu9pprpNnnt00Yly69jDtNQ
+ENV BOT_TOKEN=MTE0MjQ1NDYwMTYzMTY3MDM5NA.GsIaz1.nVgXI2tO731FQ_czq8OT4nL4yIsiR7vmahiIiY
 ENV CHANNEL_ID=1142455185038397543
 ENV PYTHONUNBUFFERED=1
 

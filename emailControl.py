@@ -11,7 +11,10 @@ def selenium_task(q, function, *args, **kwargs):
     result = function(*args, **kwargs)
     q.put(result)
 def selenium_test_email():
-
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     result = "Email button works well"
     screenshot_path = None
 

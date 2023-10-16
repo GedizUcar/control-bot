@@ -8,7 +8,10 @@ def test_pricing_button():
     result = "Pricing button works well"
     screenshot_path = None
 
-    
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(executable_path='/opt/homebrew/bin/chromedriver')
 
     try:

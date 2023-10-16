@@ -2,11 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.chrome.options import Options
 
 def test_google_button():
     result = "Google button works well"
     screenshot_path = None
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(executable_path='/opt/homebrew/bin/chromedriver')
 
