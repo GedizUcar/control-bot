@@ -18,7 +18,8 @@ def selenium_test_email():
     result = "Email button works well"
     screenshot_path = None
 
-    driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options=chrome_options)
+    driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
+
 
     try:
         driver.get("https://app.percogo.com")

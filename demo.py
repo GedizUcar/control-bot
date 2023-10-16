@@ -8,12 +8,8 @@ import threading
 from queue import Queue
 def start_chrome_with_permissions():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--use-fake-ui-for-media-stream")
-    
-    driver = webdriver.Chrome(options=chrome_options,executable_path='/opt/homebrew/bin/chromedriver')
+    chrome_options.add_argument("--use-fake-ui-for-media-stream")  
+    driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', options=chrome_options)  
     return driver
 
 def selenium_task(q,function,*args,**kwargs):
@@ -28,6 +24,14 @@ def selenium_test_demo_button():
 
     try:
         driver.get("https://app.percogo.com")
+        
+        # "We use cookies" uyarısını kapat
+        try:
+            cookie_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#c-p-bn')))
+            cookie_button.click()
+        except Exception as e:
+            # Eğer uyarıyı kapatamazsa, kodun geri kalanını çalıştırmaya devam edin.
+            pass
         
     except Exception as e:
         driver.quit()
